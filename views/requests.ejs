@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Requests</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="https://adminlte.io/themes/v3/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="https://adminlte.io/themes/v3/plugins/toastr/toastr.min.css">
+  <script src="https://adminlte.io/themes/v3/plugins/toastr/toastr.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2.2.0/dist/socket.io.js"></script>
+</head>
+<body class="hold-transition layout-top-nav">
+<div class="wrapper">
+
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
+    <div class="container">
+      <a href="#" class="navbar-brand">
+        <span class="brand-text font-weight-light">Task Mate</span>
+      </a>
+
+      <div class="collapse navbar-collapse order-3" id="navbarCollapse">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav nav nav-pills">
+          <li class="nav-item">
+            <a class="nav-link active" href="#new-request" data-toggle="pill">New Request</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#pending" data-toggle="pill">Pending</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#approved" data-toggle="pill">Approved</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#rejected" data-toggle="pill">Rejected</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#requested" data-toggle="pill">Requested</a>
+          </li>
+        </ul>
+        
+      </div>
+      
+    </div>
+    <a class="btn bg-info" href="logout">
+       Logout
+    </a>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container">
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+    <!-- Main content -->
+    <div class="content">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card card-primary card-outline">
+                <div class="card-header">
+                  <h5 class="card-title m-0" id="request_logs_name">New Request</h5>
+                </div>
+                <div class="card-body" style="position: relative; height: 600px;">
+                    <div class="tab-content p-0">
+                        <div class="tab-pane active" id="new-request" style="position: relative; height: 300px;">
+                            New Request
+                            <form action="#" id="new_request_form" method="post">
+                                <div class="form-group mb-3">
+                                    <label>Department</label>
+                                    <select class="form-control select2 select2-hidden-accessible" id="form_select_departmment" name="department" style="width: 100%;">
+                                      <option selected="selected">Alabama</option>
+                                      <option>Alaska</option>
+                                      <option>California</option>
+                                      <option>Delaware</option>
+                                      <option>Tennessee</option>
+                                      <option>Texas</option>
+                                      <option>Washington</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group mb-3">
+                                    <label>Users</label>
+                                    <select class="form-control select2 select2-hidden-accessible" name ="username" id="form_select_user" style="width: 100%;">
+                                      <option  selected="selected">User1</option>
+                                      <option>User2</option>
+                                      <option>user3</option>
+                                      <option>user4</option>
+                                      <option>User5</option>
+                                      <option>User6</option>
+                                    </select>
+                                  </div>
+
+                                  <div class="form-group">
+                                    <label for="inputDescription">Message</label>
+                                    <textarea id="inputDescription" id="form_message" name="message" class="form-control" rows="4"></textarea>
+                                  </div>
+
+                                <div class="row">
+                                  <div class="col-8">
+                                  </div>
+                                  <!-- /.col -->
+                                  <div class="col-4">
+                                    <button type="submit" class="btn btn-primary btn-block">Request</button>
+                                  </div>
+                                  <!-- /.col -->
+                                </div>
+                              </form>
+                         </div>
+                        <div class="tab-pane fade" id="pending" style="position: relative; height: 500px; overflow: scroll;">
+                          Pending requests
+                          <div class="card card-info card-outline">
+                            <div class="card-header">
+                              <h3 class="card-title">Pending</h3>
+                            </div>
+                            <div class="card-body">
+                              
+              
+                              <p class="text-muted">
+                               Some Message
+                              </p>
+                              <p>
+                                <a href="#" class="link-black text-sm mr-2"><i class="fas fa-user mr-1"></i> User :User1</a>
+                                <span class="float-right">
+                                    <a href="#" class="link-black text-sm">
+                                        <i class="far fa-building mr-1"></i> Alfa
+                                      </a>
+                                </span>
+                              </p>
+                              <span class="float-right">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-success" onClick="acceptRequest()">
+                                        <i class="fas fa-check-circle"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger" onClick="rejectRequest()">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                  </div>
+                              </span>
+                            </div>
+                            <!-- /.card-body -->
+                          </div>
+                        </div>
+                        <div class="tab-pane fade" id="approved" style="position: relative; height: 500px; overflow: scroll;">
+                            approved requests
+                          </div>
+                          <div class="tab-pane fade" id="rejected" style="position: relative; height: 500px; overflow: scroll;">
+                            rejected requests
+                          </div>
+                          <div class="tab-pane fade" id="requested" style="position: relative; height: 500px; overflow: scroll;">
+                            requested requests
+                          </div>
+                      </div>
+                </div>
+              </div>
+          </div>
+          <!-- /.col-md-6 -->
+          <div class="col-lg-6">
+            
+
+            <div class="card card-primary card-outline">
+              <div class="card-header">
+                <h5 class="card-title m-0" id="department_name_logs">{{Department Name}}</h5>
+              </div>
+              <div class="card-body " id="department_card_requests" style="position: relative; height: 600px; overflow: scroll;">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                      <h3 class="card-title">Pending</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                      <!-- <strong><i class="fas fa-book mr-1"></i> Message : </strong> -->
+      
+                      <p class="text-muted">
+                        Message Body
+                      </p>
+                      <p>
+                        <a href="#" class="link-black text-sm mr-2"><i class="fas fa-user mr-1"></i> User : </a>
+                        <span class="float-right">
+                            <a href="#" class="link-black text-sm">
+                                <i class="far fa-building mr-1"></i> Department Name
+                              </a>
+                        </span>
+                      </p>
+                    </div>
+                    <!-- /.card-body -->
+                  </div>
+              </div>
+            </div>
+          </div>
+          <!-- /.col-md-6 -->
+        </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+</div>
+<!-- ./wrapper -->
+
+<!-- REQUIRED SCRIPTS -->
+
+<!-- jQuery -->
+<script src="https://adminlte.io/themes/v3/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="https://adminlte.io/themes/v3/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="https://adminlte.io/themes/v3/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="https://adminlte.io/themes/v3/dist/js/demo.js"></script>
+</body>
+<script>
+    var _raw = <%- JSON.stringify(result) %>
+    console.log(_raw)
+    var token = _raw.token;
+    var department = _raw.department;
+    var username = _raw.username;
+    const socket = io("/",{query:`username=${username}`});
+    
+    $("#department_name_logs").empty().append(department)
+
+    //state arrays 
+    var departmentArr = [];
+    var pendingArray = [];
+    var approvedArray = [];
+    var rejectedArray = [];
+    var userREquestedArray = [];
+
+    getDepartment(department);
+    //get department
+    //get users
+    //submit form with socket io
+    function getDepartment(department){
+        var settings = {
+        "url": "department?department="+department,
+        "method": "GET",
+        };
+
+        $.ajax(settings).done(function (response) {
+            console.log(response);
+            //fill drop downs 
+            var departments = response.data;
+            // call getUsers(department) to get users
+            var str = '';
+        response.data.forEach(data => {
+             str += `<option value="${data}" >${data}</option>`
+                    })
+
+            obj = $('#form_select_departmment');
+            obj.empty().append(str);
+                    console.log(departments)
+            getUsers(departments[0])
+
+
+        });
+    }
+
+    function getUsers(department){
+        console.log("getting department");
+        var settings = {
+            "url": "users?department="+department,
+            "method": "GET"
+            };
+            $('#form_select_user').empty();
+            $.ajax(settings).done(function (response) {
+                var users = response.data;
+                
+                var str = '';
+            response.data.forEach(data => {
+                str += `<option value="${data}" >${data}</option>`
+                        })
+
+                obj = $('#form_select_user');
+                obj.empty().append(str);
+                });
+    }
+
+
+    $('#form_select_departmment').on('change', function() {
+        getUsers(this.value)
+    });
+
+
+    $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
+    var target = $(e.target)[0].innerHTML;
+    $("#request_logs_name").empty().append(target)
+    
+});
+
+
+$('input#submitButton').click( function() {
+    $.ajax({
+        url: 'some-url',
+        type: 'post',
+        dataType: 'json',
+        data: $('form#new_request_form').serialize(),
+        success: function(data) {
+                   // ... do something with the data...
+                 }
+    });
+});
+
+$('#new_request_form').on('submit', function(e){
+      e.preventDefault();
+
+    var data=  $('form#new_request_form').serializeArray()
+    console.log(data)
+
+    var sendData = {};
+    data.forEach(function(elem){
+        sendData[elem.name] = elem.value;
+    })
+    
+    sendRequest(sendData);
+    console.log(sendData);
+  });
+
+  function sendRequest(sendData){
+      var requestBody = {
+          created_by: username,
+          department: sendData.department,
+          assigned_to : sendData.username,
+          token : token,
+          user_department: department,
+          message: sendData.message
+      }
+
+      socket.emit('sendRequest',requestBody)
+      $("#new_request_form")[0].reset()
+  }
+
+  //when there is update in department
+  socket.on(department,message =>{
+    
+    console.log("department message received:",message);
+
+    $(document).Toasts('create',{
+        title:"Department Activity",
+        class:"bg-info",
+        body:`A  task has Been updated ${message.message.status} from ${message.message.created_by}`
+    })
+    
+    departmentArr = departmentArr.filter(function(el){
+        return el._id !== message.message._id;
+    }); 
+    departmentArr.push(message.message);
+    addDepartmentCard(message.departmentRequest);
+})
+
+//when there is new entry
+socket.on("newEntry",message =>{
+    console.log("new Entry message received:",message);
+
+    $(document).Toasts('create',{
+        title:"New Entry",
+        class:"bg-success",
+        body:`A new Entry Added`
+    })
+    
+    userREquestedArray.push(message.message)
+    userRequestCard(userREquestedArray);
+})
+
+//upon succeful creation
+socket.on("createResponse",message =>{
+    $(document).Toasts('create',{
+        title:"Success",
+        class:"bg-success",
+        body:"New Task created Succefully. Added In Requested Tab"
+    })
+    console.log("new Entry message received:",message);
+    pendingArray.push(message.message);
+    pendingRequestsCard(pendingArray)
+})
+
+socket.on("allRequests",message =>{
+    console.log("all requests received:",message);
+    //make departmnent obj
+    departmentArr = message.departmentRequest;
+    pendingArray = message.pending;
+    approvedArray = message.approved;
+    rejectedArray = message.rejected;
+    userREquestedArray = message.userRequested;
+
+    addDepartmentCard(message.departmentRequest);
+    pendingRequestsCard(pendingArray);
+    approvedRequestCard(approvedArray);
+    rejectedRequestCard(rejectedArray);
+    userRequestCard(userREquestedArray)
+})
+
+
+
+function pendingRequestsCard(arr){
+    var arr = arr.reverse();
+    //get array and iterate
+    var temp ="";
+    var obj = {
+        "Pending":"info",
+        "Approved":"success",
+        "Rejected":"danger"
+    }
+    // if(arr.length=0){
+    //     obj = $('#pending');
+    // obj.empty().append("<h3>No Pending Requests</h3>");
+    // }
+    arr.forEach(elem=>{
+        temp += `<div class="card card-${obj[elem.status]} card-outline">
+                            <div class="card-header">
+                              <h3 class="card-title">${elem.status}</h3>
+                              <div class="card-tools">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-success" onClick="acceptRequest('${elem._id}')">
+                                        <i class="fas fa-check-circle"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger" onClick="rejectRequest('${elem._id}')">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                  </div>
+                    </div>
+                            </div>
+                            <div class="card-body">
+                              
+              
+                              <p class="text-muted">
+                                ${elem.message}
+                              </p>
+                              <p>
+                                <a href="#" class="link-black text-sm mr-2"><i class="fas fa-user mr-1"></i> User :${elem.created_by}</a>
+                                <span class="float-right">
+                                    <a href="#" class="link-black text-sm">
+                                        <i class="far fa-building mr-1"></i> ${elem.user_department}
+                                      </a>
+                                </span>
+                              </p>
+                            </div>
+                            <!-- /.card-body -->
+                          </div>`
+    })
+    obj = $('#pending');
+    obj.empty().append(temp);
+}
+
+function addDepartmentCard(array){
+  
+    cardMaker(array,'#department_card_requests')
+
+}
+function approvedRequestCard(arr){
+    cardMaker(arr,'#approved')
+}
+
+function rejectedRequestCard(arr){
+    cardMaker(arr,'#rejected')
+}
+
+function cardMaker(arr,id){
+    var arr = arr.length>0 ? arr.reverse():[];
+    var temp = ""
+    var obj = {
+        "Pending":"info",
+        "Approved":"success",
+        "Rejected":"danger"
+    }
+    arr.forEach(elem=>{
+        temp+= `<div class="card card-${obj[elem.status]} card-outline">
+                    <div class="card-header">
+                      <h3 class="card-title">${elem.status}</h3>
+                    </div>
+                    <div class="card-body">
+                      
+      
+                      <p class="text-muted">
+                       ${elem.message}
+                      </p>
+                      <p>
+                        <a href="#" class="link-black text-sm mr-2"><i class="fas fa-user mr-1"></i> User :${elem.created_by} </a>
+                        <span class="float-right">
+                            <a href="#" class="link-black text-sm">
+                                <i class="far fa-building mr-1"></i> ${elem.user_department}
+                              </a>
+                        </span>
+                      </p>
+                    </div>
+                    <!-- /.card-body -->
+                  </div>`
+    })
+    obj = $(id);
+                obj.empty().append(temp);
+}
+
+function userRequestCard(arr){
+    var arr = arr.reverse();
+    var temp = ""
+    var obj = {
+        "Pending":"info",
+        "Approved":"success",
+        "Rejected":"danger"
+    }
+    arr.forEach(elem=>{
+        temp+= `<div class="card card-${obj[elem.status]} card-outline">
+                    <div class="card-header">
+                      <h3 class="card-title">${elem.status}</h3>
+                    </div>
+                    <div class="card-body">
+                      
+      
+                      <p class="text-muted">
+                       ${elem.message}
+                      </p>
+                      <p>
+                        <a href="#" class="link-black text-sm mr-2"><i class="fas fa-user mr-1"></i> User :${elem.assigned_to} </a>
+                        <span class="float-right">
+                            <a href="#" class="link-black text-sm">
+                                <i class="far fa-building mr-1"></i> ${elem.department}
+                              </a>
+                        </span>
+                      </p>
+                    </div>
+                    <!-- /.card-body -->
+                  </div>`
+    })
+    obj = $("#requested");
+                obj.empty().append(temp);
+}
+
+function acceptRequest(id){
+    // request acceptence for this id via ws
+    console.log("request accepted :",id)
+    socket.emit('acceptRequest',{request_id:id})
+    //remove element from pending array
+    pendingArray =  pendingArray.filter(function(el){
+        return el._id !== id;
+        });  
+        pendingRequestsCard(pendingArray);
+}
+
+function rejectRequest(id){
+    //reject request via this id 
+    console.log("request rjected", id);
+    socket.emit('rejectRequest',{request_id:id})
+
+    pendingArray =  pendingArray.filter(function(el){
+        return el._id !== id;
+        });  
+        pendingRequestsCard(pendingArray);
+}
+
+//called on successful rejection
+socket.on("rejectSuccess",message =>{
+    console.log("rejection success received:",message);
+
+    $(document).Toasts('create',{
+        title:"Rejected",
+        class:"bg-info",
+        body:`Your task has Been updated to ${message.message.status}`
+    })
+    
+    rejectedArray.push(message.message);
+    rejectedRequestCard(rejectedArray);
+})
+
+//called on successful approval
+socket.on("approveSuccess",message =>{
+    console.log("aprroval success received:",message);
+
+    $(document).Toasts('create',{
+        title:"Approved",
+        class:"bg-info",
+        body:`Your Task Been updated`
+    })
+    
+    //remove from array of pending requests  
+    
+    approvedArray.push(message.message);
+    approvedRequestCard(approvedArray);
+})
+
+socket.on("requestRejected",message =>{
+    console.log("request was rejected :",message);
+    $(document).Toasts('create',{
+        title:"Rejected",
+        class:"bg-danger",
+        body:`A task has Been rejected by: ${message.message.assigned_to} from ${message.message.department}`
+    })
+    //remove from array of pending request
+    //find same request id, and add this to array
+    userREquestedArray = userREquestedArray.filter(function(el){
+        return el._id !== message.message._id;
+    }); 
+    userREquestedArray.push(message.message); 
+    userRequestCard(userREquestedArray);
+})
+
+socket.on("requestApproved",message =>{
+    console.log("request was accepted :",message);
+
+    $(document).Toasts('create',{
+        title:"Approved",
+        class:"bg-info",
+        body:`Your request have been approved from ${message.message.assigned_to}`
+    })
+    
+    userREquestedArray = userREquestedArray.filter(function(el){
+        return el._id !== message.message._id;
+    }); 
+    userREquestedArray.push(message.message); 
+    userRequestCard(userREquestedArray);
+})
+
+
+</script>
+</html>
